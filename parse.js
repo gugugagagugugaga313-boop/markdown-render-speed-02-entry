@@ -66,7 +66,9 @@ for (const ch of "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789
 // Escaping and URLs
 // ---------------------------------------------------------------------------
 
+const ESC_RE = /[&<>"']/;
 function escapeText(s) {
+  if (!ESC_RE.test(s)) return s;
   let out = null;
   let start = 0;
   for (let i = 0; i < s.length; i++) {
@@ -160,6 +162,7 @@ function decodeNumeric(s, i) {
 
 // Attribute escaping that preserves valid entity patterns verbatim.
 function escapeAttrPreserve(s) {
+  if (!ESC_RE.test(s)) return s;
   let out = null;
   let start = 0;
   for (let i = 0; i < s.length; i++) {
@@ -1031,11 +1034,9 @@ function parseLinkTail(text, bracketStart, closeIdx, refmap) {
 // 6 autolink, 7 bracket marker, 8 delimiter, 9 soft break,
 // 10 em, 11 strong, 12 del.
 
+const SPECIALS_RE = /[\\`*_~[\]!<&\n]/;
 function hasSpecials(text) {
-  for (let i = 0; i < text.length; i++) {
-    const c = text.charCodeAt(i);
-    if (c === 92 || c === 96 || c === 42 || c === 95 || c === 126 || c === 91 || c === 93 || c === 33 || c === 60 || c === 38 || c === 10) return true;
-  }
+  if (SPECIALS_RE.test(text)) return true;
   if (text.indexOf("www.") !== -1) return true;
   if (text.indexOf("://") !== -1) return true;
   if (text.indexOf("@") !== -1) return true;
@@ -2313,6 +2314,34 @@ function splitTableLine(line) {
 }
 
 function parseDelimiterCells(line) {
+  // Fast reject (exact): a delimiter row's cells may only contain ':'
+  // and '-', so the whole line may only contain '-', ':', '|', spaces
+  // and tabs (any backslash or other char lands in a cell and invalidates
+  // it), must contain '-', and must be indented at most 3 columns.
+  // This runs on every paragraph continuation line; most fail within
+  // a few characters, avoiding the split + cell validation below.
+  let col = 0;
+  let hasDash = false;
+  let seenNonWs = false;
+  for (let i = 0; i < line.length; i++) {
+    const c = line.charCodeAt(i);
+    if (c === 45) {
+      hasDash = true;
+      seenNonWs = true;
+    } else if (c === 58 || c === 124) {
+      seenNonWs = true;
+    } else if (c === 32) {
+      if (!seenNonWs && ++col > 3) return null;
+    } else if (c === 9) {
+      if (!seenNonWs) {
+        col += 4 - (col % 4);
+        if (col > 3) return null;
+      }
+    } else {
+      return null;
+    }
+  }
+  if (!hasDash) return null;
   if (indentCols(line) > 3) return null;
   const cells = splitTableLine(line);
   if (cells.length === 0) return null;
