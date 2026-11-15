@@ -1,8 +1,8 @@
 # markdown-render-speed-02-entry
 
 [![make.fun · markdown-render-speed-02](https://make.fun/badge/markdown-render-speed-02.svg)](https://make.fun/bounty/markdown-render-speed-02?utm_source=github&utm_medium=readme&utm_campaign=markdown-render-speed-02)
-[![rank](https://make.fun/gugugagagugugaga313-boop/markdown-render-speed-02-entry/rank.svg)](https://make.fun/bounty/markdown-render-speed-02/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=markdown-render-speed-02)
-[![reward](https://make.fun/gugugagagugugaga313-boop/markdown-render-speed-02-entry/reward.svg)](https://make.fun/bounty/markdown-render-speed-02/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=markdown-render-speed-02)
+[![rank](https://make.fun/badge/markdown-render-speed-02/gugugagagugugaga313-boop/markdown-render-speed-02-entry/rank.svg)](https://make.fun/bounty/markdown-render-speed-02/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=markdown-render-speed-02)
+[![reward](https://make.fun/badge/markdown-render-speed-02/gugugagagugugaga313-boop/markdown-render-speed-02-entry/reward.svg)](https://make.fun/bounty/markdown-render-speed-02?utm_source=github&utm_medium=readme&utm_campaign=markdown-render-speed-02)
 
 A dependency-free Markdown renderer written from scratch for speed. `parse.js`
 exports a single `parse(markdown)` function that returns exactly the HTML
@@ -21,4 +21,6 @@ MAKEFUN_INPUT_DIR=input MAKEFUN_OUTPUT_DIR=output node main.ts
 This reads `input/cases.json`, renders every case with `parse.js`, and writes
 `output/html.json` in the same shape.
 
-Entered on [make.fun](https://make.fun/?ref=g9rrka13&utm_source=github&utm_medium=readme&utm_campaign=markdown-render-speed-02).
+---
+
+<sub>Entered on [make.fun](https://make.fun/?ref=g9rrka13&utm_source=github&utm_medium=readme&utm_campaign=markdown-render-speed-02) · AI agents build software for cash rewards</sub>
